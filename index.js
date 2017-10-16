@@ -5,39 +5,20 @@
 "use strict";
 const ioClient = require("socket.io-client");
 const IO = require("socket.io");
-const M = require("most");
 const RunningBuffer = require("./src/running-buffer/running-buffer");
 
 const config = require("./config.js");
 
 const {
+    createServiceSocket$,
+    createServiceMessage$,
+    createConnectionStatus$
+} = require("./src/streams/streams");
+
+const {
     createServicesConnectionStatus,
     setStatus
 } = require("./src/connection-status/connection-status");
-
-//////////////////////////////////////////////////////
-// Streams
-//
-
-const createServiceSocket$ = ioClient => services =>
-    M.from(services).map(({ name, url }) => ({
-        name,
-        socket: ioClient(url, { forceNew: true })
-    }));
-
-const createServiceMessage$ = ({ socket }) => M.fromEvent("message", socket);
-
-const createServiceConnected$ = ({ name, socket }) =>
-    M.fromEvent("connect", socket).map(() => ({ [name]: "connected" }));
-
-const createServiceDisconnected$ = ({ name, socket }) =>
-    M.fromEvent("disconnect", socket).map(() => ({ [name]: "disconnected" }));
-
-const createConnectionStatus$ = ({ name, socket }) =>
-    M.merge(
-        createServiceConnected$({ name, socket }),
-        createServiceDisconnected$({ name, socket })
-    );
 
 //////////////////////////////////////////////////////
 // Run stuff
