@@ -1,14 +1,13 @@
 {
   "name": "dbwgitter",
   "version": "1.0.0",
-  "description":
-    "Listen to all gitter rooms for a user and proxy to websocket",
+  "description": "Listen to all gitter rooms for a user and proxy to websocket",
   "main": "index.js",
   "scripts": {
     "test": "jest",
     "coverage": "jest --coverage",
-    "start": "node index.js >> dbwgitter.log &",
-    "stop": "pkill --signal SIGINT dbwgitter"
+    "start": "node index.js &",
+    "stop": "pkill --signal SIGINT dbsfunnel"
   },
   "keywords": ["gitter", "socket.io"],
   "author": "Anders Nygren",
@@ -20,7 +19,6 @@
   "dependencies": {
     "most": "^1.7.0",
     "ramda": "^0.24.1",
-    "node-gitter": "^2.0.5",
     "socket.io": "^1.7.2"
   },
   "jest": {
