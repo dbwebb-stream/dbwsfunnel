@@ -28,7 +28,7 @@ process.title = config.processTitle;
 const ioServer = new IO(config.port);
 const messageBuffer = new RunningBuffer(13);
 
-const serviceConnectionStatus = createServicesConnectionStatus(config.services);
+let serviceConnectionStatus = createServicesConnectionStatus(config.services);
 
 const listeningSocket$ = createServiceSocket$(ioClient)(config.services);
 
@@ -46,17 +46,22 @@ const connectionStatus$ = listeningSocket$
     .tap(({ name, status }) => setStatus(name)(status)(serviceConnectionStatus));
 
 connectionStatus$
-    .observe(status => ioServer.emit("connectionStatusChange", status))
+    .observe(status => {
+        serviceConnectionStatus = Object.assign(serviceConnectionStatus, status);
+        ioServer.emit("connectionStatusChange", status);
+    })
     .catch(console.error);
-
-// Request status
-ioServer.on("requestConnectionStatus", socket => {
-    socket.emit("currentConnectionStatus", serviceConnectionStatus);
-});
 
 // Send buffered messages on connection
 ioServer.on("connect", socket => {
-    console.log("incoming connection");
+    // console.log("incoming connection");
+
+    socket.emit("currentConnectionStatus", serviceConnectionStatus);
+
+    socket.on("requestConnectionStatus", () => {
+        socket.emit("currentConnectionStatus", serviceConnectionStatus);
+    });
+
     messageBuffer.buffer.forEach(message => {
         socket.emit("message", message);
     });
