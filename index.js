@@ -26,7 +26,7 @@ const {
 process.title = config.processTitle;
 
 const ioServer = new IO(config.port);
-const messageBuffer = new RunningBuffer(13);
+const messageBuffer = new RunningBuffer(23);
 
 let serviceConnectionStatus = createServicesConnectionStatus(config.services);
 

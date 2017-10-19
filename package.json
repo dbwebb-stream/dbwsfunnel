@@ -9,7 +9,10 @@
     "start": "node index.js &",
     "stop": "pkill --signal SIGINT dbsfunnel"
   },
-  "keywords": ["gitter", "socket.io"],
+  "keywords": [
+    "gitter",
+    "socket.io"
+  ],
   "author": "Anders Nygren",
   "license": "MIT",
   "devDependencies": {
