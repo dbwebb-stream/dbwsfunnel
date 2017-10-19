@@ -6,7 +6,7 @@ En websocket server som lyssnar efter meddelanden från dbwebb-stream tjänster 
 1. Klona repot.
 2. `cd` in och kör `$ npm install`
 
-## Konfigurera tjänster att lyssna på
+## Konfigurera
 I rotkatalogen finns filen `config.js` där du kan sätta vilka tjänster funnel ska lyssna på.
 
 Ex:
